@@ -8,18 +8,14 @@ class Simulation:
         self.store = utils.dict_skeleton
         self.ticks = 3600
         
-        self.fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id"]
-        with open("output.csv", "w", newline="") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
-            writer.writeheader()
-            csvfile.close()
+        self.fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id", "queue_time"]
+        
         
 
 
     def run(self):
-        fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id"]
         with open("output.csv", "w", newline="") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
             writer.writeheader()
         
         for i in range(7):
@@ -27,16 +23,20 @@ class Simulation:
                 print("day: " + str(i) + " hour: " + str(j))
 
                 num_parties = utils.player_distribution[i][j]
-                parties_per_tick = round(num_parties / self.ticks / 300) 
-                day = utils.days[i]
-                hour = utils.hours[j]
-
+                parties_per_tick = round(num_parties / self.ticks) 
+                
                 for k in range(self.ticks):
                     for l in range(parties_per_tick):
-                        p = Party(day, hour)
+                        day = utils.days[i]
+                        hour = utils.hours[j]
+                        ticks = k
+
+                        p = Party(day, hour, ticks)
                         self.store[p.get_region()][p.get_platform()][p.get_skill()][p.get_role()].append(p)
-                    
-                    self.matchmaking({"day": day, "time": hour, "ticks": k})
+
+                    time = {"day": day, "time": hour, "ticks": ticks}
+
+                    self.matchmaking(time)
 
         print("done")
 
@@ -51,9 +51,9 @@ class Simulation:
         if player.get_day() != day:
             current_hour += 24
 
-        hour_diff = int(player.get_time()[:2]) - current_hour
+        hour_diff = current_hour - int(player.get_time()[:2])
 
-        return (hour_diff * self.ticks) + ticks
+        return (hour_diff * self.ticks) + (ticks - player.get_ticks())
 
     def matchmaking(self, time):
         for region in self.store:
@@ -76,12 +76,11 @@ class Simulation:
     
 
     def write_to_csv(self, killer, victims, time):
-        print('csv')
         with open("output.csv", "a", newline="") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
-            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id(), "queue_time": self.calculate_queue_time(time)})
+            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id(), "queue_time": self.calculate_queue_time(killer, time)})
             for victim in victims:
-                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id(), "queue_time": self.calculate_queue_time(time)})
+                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id(), "queue_time": self.calculate_queue_time(victim, time)})
                 
             csvfile.close()
 
