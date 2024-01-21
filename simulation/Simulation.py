@@ -8,7 +8,7 @@ class Simulation:
         self.store = utils.dict_skeleton
         self.ticks = 3600
         
-        self.fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id", "queue_time"]
+        self.fieldnames = ["day", "time", "platform", "skill", "role", "size", "id", "queue_time"]
         
         
 
@@ -32,7 +32,7 @@ class Simulation:
                         ticks = k
 
                         p = Party(day, hour, ticks)
-                        self.store[p.get_region()][p.get_platform()][p.get_skill()][p.get_role()].append(p)
+                        self.store[p.get_platform()][p.get_skill()][p.get_role()].append(p)
 
                     time = {"day": day, "time": hour, "ticks": ticks}
 
@@ -55,31 +55,30 @@ class Simulation:
         return (hour_diff * self.ticks) + (ticks - player.get_ticks())
 
     def matchmaking(self, time):
-        for region in self.store:
-            for platform in self.store[region]:
-                for skill in self.store[region][platform]:
-                    for role in self.store[region][platform][skill]:
-                        for killer in self.store[region][platform][skill]["killer"]:
-                            victims = []
-                            total = 0
-                            for survivor in self.store[region][platform][skill]["survivor"]:
-                                if survivor.get_size() + total <= 4:
-                                    victims.append(survivor)
-                                    total+=survivor.get_size()
-                                    if total == 4:
-                                        self.write_to_csv(killer, victims, time)
-                                        self.store[region][platform][skill]["killer"].remove(killer)
-                                        for victim in victims:
-                                            self.store[region][platform][skill]["survivor"].remove(victim)
-                                        victims.clear()
+        for platform in self.store:
+            for skill in self.store[platform]:
+                for role in self.store[platform][skill]:
+                    for killer in self.store[platform][skill]["killer"]:
+                        victims = []
+                        total = 0
+                        for survivor in self.store[platform][skill]["survivor"]:
+                            if survivor.get_size() + total <= 4:
+                                victims.append(survivor)
+                                total+=survivor.get_size()
+                                if total == 4:
+                                    self.write_to_csv(killer, victims, time)
+                                    self.store[platform][skill]["killer"].remove(killer)
+                                    for victim in victims:
+                                        self.store[platform][skill]["survivor"].remove(victim)
+                                    victims.clear()
     
 
     def write_to_csv(self, killer, victims, time):
         with open("output.csv", "a", newline="") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
-            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id(), "queue_time": self.calculate_queue_time(killer, time)})
+            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id(), "queue_time": self.calculate_queue_time(killer, time)})
             for victim in victims:
-                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id(), "queue_time": self.calculate_queue_time(victim, time)})
+                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id(), "queue_time": self.calculate_queue_time(victim, time)})
                 
             csvfile.close()
 
