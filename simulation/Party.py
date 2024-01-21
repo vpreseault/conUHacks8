@@ -48,6 +48,12 @@ class Party:
 
     def get_platform(self):
         return self.platform
+    
+    def get_day(self):
+        return self.day
+    
+    def get_hour(self):
+        return self.time
 
     def get_id(self):
         return self.id

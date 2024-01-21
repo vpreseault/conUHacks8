@@ -31,7 +31,7 @@ class Simulation:
 
         hour_diff = int(player.get_hour()[:2]) - current_hour
 
-        return (hour_diff * 3600) + ticks
+        return (hour_diff * self.ticks) + ticks
 
     def matchmaking(self):
         pass
