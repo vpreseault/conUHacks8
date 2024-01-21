@@ -3,9 +3,10 @@ import random
 
 
 class Party:
-    def __init__(self, day, time):
+    def __init__(self, day, time, ticks):
         self.day = day
         self.time = time
+        self.ticks = ticks
 
         self.region = self.set_region()
         self.platform = self.set_platform()
@@ -55,6 +56,9 @@ class Party:
     
     def get_time(self):
         return self.time
+    
+    def get_ticks(self):
+        return self.ticks
 
     def get_id(self):
         return self.id
