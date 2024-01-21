@@ -18,7 +18,7 @@ class Simulation:
                         hour = utils.hours[j]
                         p = Party(day, hour)
 
-                        self.store[p.get_region()][p.get_platform()][p.get_skill()].append(p)
+                        self.store[p.get_region()][p.get_platform()][p.get_skill()][p.get_role()].append(p)
                     
                     self.matchmaking()
         print("done")
