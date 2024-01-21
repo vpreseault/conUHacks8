@@ -23,6 +23,16 @@ class Simulation:
                     self.matchmaking()
         print("done")
 
+    def calculate_queue_time(self, player, day, hour, ticks):
+        current_hour = int(hour[:2])
+
+        if player.get_day() != day:
+            current_hour += 24
+
+        hour_diff = int(player.get_hour()[:2]) - current_hour
+
+        return (hour_diff * 3600) + ticks
+
     def matchmaking(self):
         pass
 
