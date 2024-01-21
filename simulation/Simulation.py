@@ -8,6 +8,11 @@ class Simulation:
         self.store = utils.dict_skeleton
         self.ticks = 3600
 
+        self.fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id", "queue_time"]
+        with open("output.csv", "a", newline="") as csvfile:
+            writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
+            writer.writeheader()
+
 
     def run(self):
         fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id"]
@@ -58,9 +63,8 @@ class Simulation:
     
 
     def write_to_csv(self, killer, victims):
-        fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id", "queue_time"]
         with open("output.csv", "a", newline="") as csvfile:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
             writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id()})
             for victim in victims:
                 writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id()})
