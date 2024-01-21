@@ -19,10 +19,11 @@ class Party:
         # self.name = self.role + " " + self.id
 
     def set_region(self):
-        return utils.regions[round(random.random() * len(utils.regions) - 1)]
+        return random.choice(utils.regions)
  
     def set_skill(self):
-        return utils.skills[round(random.random() * len(utils.skills) - 1)]
+        return random.choice(utils.skills)
+
  
     def set_role(self):
         n = utils.random_number()
@@ -39,7 +40,8 @@ class Party:
             return random.choice(utils.size_probability)
 
     def set_platform(self):
-        return utils.platforms[round(random.random() * len(utils.platforms) - 1)]
+        return random.choice(utils.platforms)
+    
 
     def get_region(self):
         return self.region

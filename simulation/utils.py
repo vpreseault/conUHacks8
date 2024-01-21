@@ -28,7 +28,11 @@ hours = [
     "23:00",
 ]
 regions = ["NAE", "NAW", "EUNE", "EUW", "OCE", "BR", "ASIA"]
-platforms = ["steam", "epg", "xsx", "ps5"]
+regions = ["NAE", "NAE", "NAE", "NAE", "NAW", "NAW","NAW", "EUNE", "EUW", "EUW", "EUW", "OCE", "BR", "ASIA"]
+
+
+platforms = [ "steam", "steam", "steam", "steam", "epg", "epg", "epg", "xsx", "ps5", "ps5" ]
+
 # 30 k 70 survivor
 roles = ["killer", "survivor"]
 skills = [
