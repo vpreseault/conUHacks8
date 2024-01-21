@@ -2,7 +2,7 @@ import utils
 import random
 
 
-class Player:
+class Party:
     def __init__(self, day, time):
         self.day = day
         self.time = time
