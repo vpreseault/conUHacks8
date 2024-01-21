@@ -23,10 +23,12 @@ class Party:
  
     def set_role(self):
         n = utils.random_number()
+        
         if n <= 0.3:
             self.role = "killer"
         else:
             self.role = "survivor"
+        print(self.get_role())
  
     def set_size(self):
         return random.choice(utils.size_probability)

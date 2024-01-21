@@ -24,7 +24,7 @@ class Simulation:
                         day = utils.days[i]
                         hour = utils.hours[j]
                         p = Party(day, hour)
-
+                        print(p.get_role())
                         self.store[p.get_region()][p.get_platform()][p.get_skill()][p.get_role()].append(p)
                     
                     self.matchmaking()
@@ -61,10 +61,10 @@ class Simulation:
         fieldnames = ["day", "time", "region", "platform", "skill", "role", "size", "id", "queue_time"]
         with open("output.csv", "a", newline="") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id(), "queue_time": killer.get_queue_time()})
+            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id()})
             for victim in victims:
-                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id(), "queue_time": victim.get_queue_time()})
-                                            
+                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id()})
+                # "queue_time": self.get_queue_time()
 
 
 

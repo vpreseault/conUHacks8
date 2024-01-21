@@ -602,7 +602,10 @@ dict_skeleton = {
     },
     "ASIA": {
         "steam": {
-            "1": {"killer": [], "survivor": []},
+            "1": {
+                "killer": [], 
+                "survivor": []
+            },
             "2": {"killer": [], "survivor": []},
             "3": {"killer": [], "survivor": []},
             "4": {"killer": [], "survivor": []},
