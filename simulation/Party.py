@@ -1,9 +1,10 @@
 import utils
 import random
+import uuid
 
 
 class Party:
-    def __init__(self, day, time, ticks):
+    def __init__(self, id, day, time, ticks):
         self.day = day
         self.time = time
         self.ticks = ticks
@@ -14,7 +15,8 @@ class Party:
         self.skill = self.set_skill()
         self.role = self.set_role()
         self.size = self.set_size()
-        self.id = None
+        self.id = uuid.uuid4()
+        # self.name = self.role + " " + self.id
 
     def set_region(self):
         return utils.regions[round(random.random() * len(utils.regions) - 1)]
