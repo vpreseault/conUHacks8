@@ -12,42 +12,42 @@ class Party:
 
         self.skill = self.set_skill()
         self.role = self.set_role()
-        self.party = None
+        self.party = self.set_party()
         self.id = None
-
-    def get_region(self):
-        return self.region
 
     def set_region(self):
         return utils.regions[round(random.random() * len(utils.regions) - 1)]
-
-    def get_skill(self):
-        return self.skill
-
+ 
     def set_skill(self):
         return utils.skills[round(random.random() * len(utils.skills) - 1)]
-
-    def get_role(self):
-        return self.role
-
+ 
     def set_role(self):
         n = utils.random_number()
         if n <= 0.3:
             self.role = "killer"
         else:
             self.role = "survivor"
+ 
+    def set_party(self):
+        return random.choice(utils.party_probability)
+
+    def set_platform(self):
+        return utils.platforms[round(random.random() * len(utils.platforms) - 1)]
+
+    def get_region(self):
+        return self.region
+
+    def get_skill(self):
+        return self.skill
+
+    def get_role(self):
+        return self.role
 
     def get_party(self):
         return self.party
 
-    def set_party(self, party):
-        self.party = party
-
     def get_platform(self):
         return self.platform
-
-    def set_platform(self):
-        return utils.platforms[round(random.random() * len(utils.platforms) - 1)]
 
     def get_id(self):
         return self.id
