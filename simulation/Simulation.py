@@ -25,19 +25,27 @@ class Simulation:
         for i in range(7):
             for j in range(24):
                 print("day: " + str(i) + " hour: " + str(j))
+
                 num_parties = utils.player_distribution[i][j]
                 parties_per_tick = round(num_parties / self.ticks / 300) 
+                day = utils.days[i]
+                hour = utils.hours[j]
+
                 for k in range(self.ticks):
                     for l in range(parties_per_tick):
-                        day = utils.days[i]
-                        hour = utils.hours[j]
                         p = Party(day, hour)
                         self.store[p.get_region()][p.get_platform()][p.get_skill()][p.get_role()].append(p)
                     
-                    self.matchmaking()
+                    self.matchmaking({"day": day, "time": hour, "ticks": k})
+
         print("done")
 
-    def calculate_queue_time(self, player, day, hour, ticks):
+    def calculate_queue_time(self, player, time):
+        print(time)
+        day = time['day']
+        hour = time['time']
+        ticks = time['ticks']
+
         current_hour = int(hour[:2])
 
         if player.get_day() != day:
@@ -47,7 +55,7 @@ class Simulation:
 
         return (hour_diff * self.ticks) + ticks
 
-    def matchmaking(self):
+    def matchmaking(self, time):
         for region in self.store:
             for platform in self.store[region]:
                 for skill in self.store[region][platform]:
@@ -60,20 +68,21 @@ class Simulation:
                                     victims.append(survivor)
                                     total+=survivor.get_size()
                                     if total == 4:
-                                        self.write_to_csv(killer, victims)
+                                        self.write_to_csv(killer, victims, time)
                                         self.store[region][platform][skill]["killer"].remove(killer)
                                         for victim in victims:
                                             self.store[region][platform][skill]["survivor"].remove(victim)
                                         victims.clear()
     
 
-    def write_to_csv(self, killer, victims):
+    def write_to_csv(self, killer, victims, time):
+        print('csv')
         with open("output.csv", "a", newline="") as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=self.fieldnames)
-            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id()})
+            writer.writerow({"day": killer.get_day(), "time": killer.get_time(), "region": killer.get_region(), "platform": killer.get_platform(), "skill": killer.get_skill(), "role": killer.get_role(), "size": killer.get_size(), "id": killer.get_id(), "queue_time": self.calculate_queue_time(time)})
             for victim in victims:
-                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id()})
-                # "queue_time": self.get_queue_time()
+                writer.writerow({"day": victim.get_day(), "time": victim.get_time(), "region": victim.get_region(), "platform": victim.get_platform(), "skill": victim.get_skill(), "role": victim.get_role(), "size": victim.get_size(), "id": victim.get_id(), "queue_time": self.calculate_queue_time(time)})
+                
             csvfile.close()
 
 
