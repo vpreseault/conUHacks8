@@ -31,7 +31,10 @@ class Party:
             return "survivor"
  
     def set_size(self):
-        return random.choice(utils.size_probability)
+        if self.role == "killer":
+            return 1
+        else:
+            return random.choice(utils.size_probability)
 
     def set_platform(self):
         return utils.platforms[round(random.random() * len(utils.platforms) - 1)]
