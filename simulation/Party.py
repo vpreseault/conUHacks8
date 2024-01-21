@@ -25,10 +25,9 @@ class Party:
         n = utils.random_number()
         
         if n <= 0.3:
-            self.role = "killer"
+            return "killer"
         else:
-            self.role = "survivor"
-        print(self.get_role())
+            return "survivor"
  
     def set_size(self):
         return random.choice(utils.size_probability)
@@ -54,7 +53,7 @@ class Party:
     def get_day(self):
         return self.day
     
-    def get_hour(self):
+    def get_time(self):
         return self.time
 
     def get_id(self):
