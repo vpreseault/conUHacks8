@@ -41,7 +41,6 @@ class Simulation:
         print("done")
 
     def calculate_queue_time(self, player, time):
-        print(time)
         day = time['day']
         hour = time['time']
         ticks = time['ticks']
