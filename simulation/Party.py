@@ -12,7 +12,7 @@ class Party:
 
         self.skill = self.set_skill()
         self.role = self.set_role()
-        self.party = self.set_party()
+        self.size = self.set_size()
         self.id = None
 
     def set_region(self):
@@ -28,8 +28,8 @@ class Party:
         else:
             self.role = "survivor"
  
-    def set_party(self):
-        return random.choice(utils.party_probability)
+    def set_size(self):
+        return random.choice(utils.size_probability)
 
     def set_platform(self):
         return utils.platforms[round(random.random() * len(utils.platforms) - 1)]
@@ -43,8 +43,8 @@ class Party:
     def get_role(self):
         return self.role
 
-    def get_party(self):
-        return self.party
+    def get_size(self):
+        return self.size
 
     def get_platform(self):
         return self.platform

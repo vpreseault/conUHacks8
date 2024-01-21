@@ -692,7 +692,7 @@ dict_skeleton = {
     },    
 }
 
-party_probability = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4]
+size_probability = [1, 1, 1, 1, 2, 2, 2, 3, 3, 4]
 player_distribution = [
     [
         28285,
