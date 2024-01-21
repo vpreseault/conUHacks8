@@ -4,7 +4,7 @@ import uuid
 
 
 class Party:
-    def __init__(self, id, day, time, ticks):
+    def __init__(self, day, time, ticks):
         self.day = day
         self.time = time
         self.ticks = ticks
